@@ -25,7 +25,7 @@ class Post(Validator):
         result = [f"Post by: {self.user.username.capitalize()}",
                   f"Picture: {self.picture}",
                   f"Text: {self.text}",
-                  f"Likes: {self.likes}",
-                  f"Comments: {self.comments}"
+                  f"Likes: {len(self.likes)}",
+                  f"Comments: {len(self.comments)}"
                   ]
         return '\n'.join(result)
