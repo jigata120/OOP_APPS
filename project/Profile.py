@@ -4,9 +4,8 @@ from abc import ABC, abstractmethod
 class Profile(ABC):
     REQUIRED_DATA = {'username': str, 'age': int, 'email': str, 'password': str, }
 
-    def __init__(self, username: str, age: int,
-                 gender: str, email: str, password: str,
-                 bio: str, contact_information: str, location: str,
+    def __init__(self, username: str, age: int, email: str, password: str,
+                 gender: str, bio: str, contact_information: str, location: str,
                  education: str, hobbies: str, is_active: bool, is_admin: bool,
                  is_staff: bool, is_profile_private: bool,
                  ):
@@ -27,8 +26,16 @@ class Profile(ABC):
         self.posts = []
         self.saves = []
 
+    def change_password(self, new_password):
+        self.password = new_password
 
-   # @abstractmethod
+    def change_email(self, new_email):
+        self.email = new_email
+
+    def change_privacy_status(self):
+        self.is_profile_private = not self.is_profile_private
+
+    @abstractmethod
     def profile_permissions(self):
         pass
 
@@ -54,6 +61,7 @@ class Profile(ABC):
         return "".join(result)
 
 
+''''
 user = Profile(
     username="JohnDoe", age=25, gender="Male", email="john@example.com",
     password="secure_password", bio="A software developer", contact_information="123-456-7890",
@@ -62,3 +70,4 @@ user = Profile(
 )
 
 print(user)
+'''
