@@ -24,6 +24,7 @@ class Profile(ABC):
         self.is_staff = is_staff
         self.is_profile_private = is_profile_private
         self.posts = []
+        self.chats = []
         self.saves = []
 
     def change_password(self, new_password):
@@ -40,7 +41,7 @@ class Profile(ABC):
         pass
 
     def __repr__(self):
-        return f"{self.username.capitalize()}'s profile:"
+        return f"{self.username.capitalize()}'s profile"
 
     def __str__(self):
         if self.is_profile_private:
