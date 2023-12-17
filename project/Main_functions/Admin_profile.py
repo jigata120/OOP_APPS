@@ -1,4 +1,4 @@
-from project.Profile import Profile
+from project.Main_functions.Profile import Profile
 
 
 class AdminProfile(Profile):
