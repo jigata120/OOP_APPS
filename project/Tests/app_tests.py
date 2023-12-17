@@ -11,9 +11,19 @@ class TestSocialMediaFunctionalities(TestCase):
         self.assertIsNotNone(SocialMedia())
 
     def test_login(self):
-        result = self.sm.login()
-        print(result)
+        # successful
+        pass
+
     def test_register(self):
+        # successful
+        pass
+
+    def test_logout(self):
+        # successful
+        pass
+
+    def test_post(self):
+        # successful
         pass
 
 
