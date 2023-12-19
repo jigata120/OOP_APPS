@@ -1,6 +1,17 @@
 class Validator:
     @staticmethod
-    def get_validated_data(data_name, data_type, required_data=[], data_min_length=None, data_max_length=None):
+    def sort_by_parameter(list_of_sortable_objects, specific_attributes=None, second_specific_attributes=None,
+                          reverse=False):
+        if specific_attributes:
+            return sorted(list_of_sortable_objects, reverse=reverse,
+                          key=lambda x: (
+                              getattr(x, specific_attributes, 0),
+                              getattr(x, second_specific_attributes, 0)))
+        return sorted(list_of_sortable_objects, key=lambda x: x)
+
+    @staticmethod
+    def get_validated_data(data_name, data_type, required_data=[], required_choice=[], data_min_length=None,
+                           data_max_length=None):
         while True:
             if data_name in required_data:
                 data = input(f"*Please enter your {data_name}: ")
@@ -9,7 +20,8 @@ class Validator:
 
             if Validator.is_valid_type(data, type_of_data=data_type) and \
                     Validator.is_min_length(data, data_min_length) and \
-                    Validator.is_max_length(data, data_max_length):
+                    Validator.is_max_length(data, data_max_length) and \
+                    Validator.is_in_choises(data, required_choice):
                 return data
 
     @staticmethod
@@ -65,8 +77,14 @@ class Validator:
             return False
         return True
 
+    @staticmethod
+    def is_in_choices(data, required_choise):
+        if required_choise:
+            if data not in required_choise:
+                print(f"Error: {data} is not in {required_choise}")
+                return False
+        return True
 
 # Example usage:''
-#data1 = Validator.get_validated_data('username', data_type=str, required_data=['username'], )
-#print(f"You entered: {data1}")
-
+# data1 = Validator.get_validated_data('username', data_type=str, required_data=['username'], )
+# print(f"You entered: {data1}")
