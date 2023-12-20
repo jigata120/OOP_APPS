@@ -58,6 +58,12 @@ class SocialMediaFunctionalities(Validator):
         )
         return user
 
+    def find_user(self, user_name):
+        found_user = next((found_user for found_user in self.users if user_name == user.username), None)
+        if not found_user:
+            raise ValueError("This user do not exist.")
+        return found_user
+
     def logout(self):
         pass
 
@@ -77,11 +83,38 @@ class SocialMediaFunctionalities(Validator):
             return chat
         print("You have no admin permissions to crate a chat.")
 
+    def non_private(self):
+        return [user for user in self.users if not user.is_profile_private]
+
+    def all_posts(self, user=None):
+        posts = []
+        if not user:
+            for user in self.non_private():
+                posts += user.posts
+        else:
+            for user in user._followers_list:
+                posts += user.posts
+        return posts
+
     def main_content(self):
-        all_content = [user]
+        sorted_users = Validator.sort_by_parameter(self.users, 'followers', 'username', reverse=True)
+        sorted_posts = Validator.sort_by_parameter(self.all_posts(),'likes','comments')
+        return sorted_posts
+
+
     def personal_content(self):
+        return
+
+    def recommended_content(self):
         pass
-    def recomended_content(self):
+
+
 sm = SocialMediaFunctionalities()
 
-print(sm.create_post(user1))
+user2.posts = [12, 1, 1, 1, 1]
+user2.followers = [12, 1, 1, 1, 1]
+
+user1.posts = [2, 23]
+user3.posts = [1, 23, 4, 5, 5, 6]
+print(sm.main_content())
+
