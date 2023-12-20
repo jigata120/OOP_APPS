@@ -26,6 +26,15 @@ class Profile(ABC):
         self.posts = []
         self.chats = []
         self.saves = []
+        self._followers_list = []
+
+    @property
+    def followers(self):
+        return len(self._followers_list)
+
+    @followers.setter
+    def followers(self, value):
+        self._followers_list = value
 
     def change_password(self, new_password):
         self.password = new_password
