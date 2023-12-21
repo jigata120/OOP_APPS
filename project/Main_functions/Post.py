@@ -9,8 +9,16 @@ class Post(Validator):
         self.picture = picture
         self.text = text
         self.user = user
-        self.likes: List[Profile] = []
-        self.comments = []
+        self.likes_list: List[Profile] = []
+        self.comments_list = []
+
+    @property
+    def likes_count(self):
+        return len(self.likes_list)
+
+    @property
+    def comment_count(self):
+        return len(self.comments_list)
 
     @classmethod
     def create(cls, picture, text: str, user: Profile):
@@ -19,12 +27,12 @@ class Post(Validator):
         return post
 
     def like_post(self, user: Profile):
-        if user in self.likes:
-            self.likes.remove(user)
-        self.likes.append(user)
+        if user in self.likes_list:
+            self.likes_list.remove(user)
+        self.likes_list.append(user)
 
     def comment_post(self, user, comment):
-        self.comments.append(f"{user}: {comment}")
+        self.comments_list.append(f"{user}: {comment}")
 
     def __repr__(self):
         return f"{self.user.username.capitalize()}'s post"
@@ -36,7 +44,7 @@ class Post(Validator):
                   f"{self.picture}",
                   f"-------------------------------",
                   f"Text: {self.text}",
-                  f"Likes: {len(self.likes)} Comments: {len(self.comments)}",
+                  f"Likes: {self.likes_count} Comments: {self.comment_count}",
                   '===============================',
                   ]
         return '\n'.join(result)
