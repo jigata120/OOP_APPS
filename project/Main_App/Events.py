@@ -59,7 +59,7 @@ class SocialMediaFunctionalities(Validator):
         return user
 
     def find_user(self, user_name):
-        found_user = next((found_user for found_user in self.users if user_name == user.username), None)
+        found_user = next((found_user for found_user in self.users if user_name == found_user.username), None)
         if not found_user:
             raise ValueError("This user do not exist.")
         return found_user
@@ -98,9 +98,8 @@ class SocialMediaFunctionalities(Validator):
 
     def main_content(self):
         sorted_users = Validator.sort_by_parameter(self.users, 'followers', 'username', reverse=True)
-        sorted_posts = Validator.sort_by_parameter(self.all_posts(),'likes','comments')
+        sorted_posts = Validator.sort_by_parameter(self.all_posts(), 'likes_count', 'comments_count',reverse=True)
         return sorted_posts
-
 
     def personal_content(self):
         return
@@ -111,10 +110,30 @@ class SocialMediaFunctionalities(Validator):
 
 sm = SocialMediaFunctionalities()
 
-user2.posts = [12, 1, 1, 1, 1]
-user2.followers = [12, 1, 1, 1, 1]
 
-user1.posts = [2, 23]
-user3.posts = [1, 23, 4, 5, 5, 6]
+post1 = Post.create(':0', 'post1', user1)
+post2 = Post.create(':)', 'post1', user1)
+post3 = Post.create(':(', 'post1', user1)
+post4 = Post.create(':0{','post1',  user2)
+post5 = Post.create(':>', 'post1', user2)
+post6 = Post.create(':?', 'post1', user3)
+post7 = Post.create(':/', 'post1', user4)
+post1.like_post(user1)
+post1.like_post(user2)
+post1.like_post(user1)
+post1.like_post(user4)
+post2.like_post(user1)
+post3.like_post(user1)
+post4.like_post(user2)
+post5.like_post(user3)
+post6.like_post(user4)
+post7.like_post(user5)
+post7.comment_post(user1,'nice!')
 print(sm.main_content())
+list = [str(post) for post in sm.main_content()]
+print('\n+++++++++++++++++++++++++++++++\n'.join(list))
+
+
+
+
 
