@@ -3,10 +3,13 @@ class Validator:
     def sort_by_parameter(list_of_sortable_objects, specific_attributes=None, second_specific_attributes=None,
                           reverse=False):
         if specific_attributes:
-            return sorted(list_of_sortable_objects, reverse=reverse,
+            list = sorted(list_of_sortable_objects,
                           key=lambda x: (
                               getattr(x, specific_attributes, 0),
                               getattr(x, second_specific_attributes, 0)))
+            if reverse:
+                return reversed(list)
+            return list
         return sorted(list_of_sortable_objects, key=lambda x: x)
 
     @staticmethod
@@ -21,7 +24,7 @@ class Validator:
             if Validator.is_valid_type(data, type_of_data=data_type) and \
                     Validator.is_min_length(data, data_min_length) and \
                     Validator.is_max_length(data, data_max_length) and \
-                    Validator.is_in_choises(data, required_choice):
+                    Validator.is_in_choices(data, required_choice):
                 return data
 
     @staticmethod
@@ -78,10 +81,10 @@ class Validator:
         return True
 
     @staticmethod
-    def is_in_choices(data, required_choise):
-        if required_choise:
-            if data not in required_choise:
-                print(f"Error: {data} is not in {required_choise}")
+    def is_in_choices(data, required_choice):
+        if required_choice:
+            if data not in required_choice:
+                print(f"Error: {data} is not in {required_choice}")
                 return False
         return True
 
