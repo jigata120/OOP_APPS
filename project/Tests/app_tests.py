@@ -57,5 +57,21 @@ class TestSocialMediaFunctionalities(TestCase):
         post7.like_post(user5)
         post7.comment_post(user1,'nice!')
         print([str(post) for post in self.sm.main_content()])
+        list = [str(post) for post in self.sm.personal_content(user5)]
+        print('\n+++++++++++++++++++++++++++++++\n'.join(list))
+        # successful
+
+        user5._followers_list = [user2, user3]
+        list = [str(post) for post in self.sm.personal_content(user5)]
+        print('\n+++++++++++++++++++++++++++++++\n'.join(list))
+        # successful
+
+        print(post1.display_likes())
+        # successful
+
+        print(post7.display_comments())
+        # successful
+
+
 if __name__ == '__main__':
     main()
