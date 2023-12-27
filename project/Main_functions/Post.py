@@ -34,6 +34,7 @@ class Post(Validator):
     def comment_post(self, user, comment):
         self.comments_list.append(f"{user.username}: {comment}")
 
+
     def __repr__(self):
         return f"{self.user.username.capitalize()}'s post"
 
@@ -64,14 +65,14 @@ class Post(Validator):
         return '\n'.join(info+list_of_comments)
 
 
-def __str__(self):
-    result = ['===============================',
-              f"Post by: {self.user.username.capitalize()}",
-              f"-------------------------------",
-              f"{self.picture}",
-              f"-------------------------------",
-              f"Text: {self.text}",
-              f"Likes: {self.likes_count} Comments: {self.comment_count}",
-              '===============================',
-              ]
-    return '\n'.join(result)
+    def __str__(self):
+        result = ['===============================',
+                  f"Post by: {self.user.username.capitalize()}",
+                  f"-------------------------------",
+                  f"{self.picture}",
+                  f"-------------------------------",
+                  f"Text: {self.text}",
+                  f"Likes: {self.likes_count} Comments: {self.comment_count}",
+                  '===============================',
+                  ]
+        return '\n'.join(result)
