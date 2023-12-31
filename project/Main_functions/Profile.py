@@ -45,6 +45,19 @@ class Profile(ABC):
     def change_privacy_status(self):
         self.is_profile_private = not self.is_profile_private
 
+    def follow(self, user):
+        if not user.is_private:
+            self._followers_list.append(user)
+            return f'You now Follow {user.username}'
+        # sidecase private
+
+    def save_post(self, post):
+        if post in self.saves:
+            self.saves.remove(post)
+            return "Post removed successfully"
+        self.saves.append(post)
+        return "Post saved successfully"
+
     @abstractmethod
     def profile_permissions(self):
         pass
