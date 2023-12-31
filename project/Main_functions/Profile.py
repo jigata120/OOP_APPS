@@ -65,6 +65,8 @@ class Profile(ABC):
     def __repr__(self):
         return f"{self.username.capitalize()}'s profile"
 
+    def quick_view(self):
+        pass
     def __str__(self):
         if self.is_profile_private:
             return f"{self.username.capitalize()}'s private profile:\nSend a request to get a public profile"
