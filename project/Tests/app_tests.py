@@ -32,6 +32,7 @@ class TestSocialMediaFunctionalities(TestCase):
     def test_post(self):
         # successful
         pass
+
     def test_content(self):
         user1 = DefaultProfile("user1", 21, ".com", "123a")
         user2 = DefaultProfile("user2", 22, ".com", "123")
@@ -41,7 +42,7 @@ class TestSocialMediaFunctionalities(TestCase):
         post1 = Post.create(':0', 'post1', user1)
         post2 = Post.create(':)', 'post1', user1)
         post3 = Post.create(':(', 'post1', user1)
-        post4 = Post.create(':0{','post1',  user2)
+        post4 = Post.create(':0{', 'post1', user2)
         post5 = Post.create(':>', 'post1', user2)
         post6 = Post.create(':?', 'post1', user3)
         post7 = Post.create(':/', 'post1', user4)
@@ -55,8 +56,8 @@ class TestSocialMediaFunctionalities(TestCase):
         post5.like_post(user3)
         post6.like_post(user4)
         post7.like_post(user5)
-        post7.comment_post(user1,'nice!')
-        print([str(post) for post in self.sm.main_content()])
+        post7.comment_post(user1, 'nice!')
+
         list = [str(post) for post in self.sm.personal_content(user5)]
         print('\n+++++++++++++++++++++++++++++++\n'.join(list))
         # successful
