@@ -66,7 +66,12 @@ class Profile(ABC):
         return f"{self.username.capitalize()}'s profile"
 
     def quick_view(self):
-        pass
+        result = [f"{self.username}",
+                  f"Followers: {self.followers}",
+                  f"Posts: {len(self.posts)}",
+                  ]
+        return " ".join(result)
+
     def __str__(self):
         if self.is_profile_private:
             return f"{self.username.capitalize()}'s private profile:\nSend a request to get a public profile"
