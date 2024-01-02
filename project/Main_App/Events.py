@@ -122,7 +122,7 @@ class SocialMediaFunctionalities(Validator):
             "posts": [self.personal_posts, "Follow people to see more posts"],
             "new_users": [self.personal_new_users, "There are no other users"]
         }
-        content_choice = Validator.get_validated_data('content type( post / new_users)', data_type=str,
+        content_choice = Validator.get_validated_data('content type( posts / new_users)', data_type=str,
                                                       required_choice=content_types.keys())
         if content_choice:
             content = content_types[content_choice][0](user)
@@ -133,9 +133,6 @@ class SocialMediaFunctionalities(Validator):
     def recommended_content(self):
         pass
 
-    def options_post(self, events, post):
-        events_str = 'event\n' + '\n'.join([f"{position + 1}: {event}" for position, event in enumerate(events.keys())])
-        return Validator.get_validated_data(events_str, data_type=str, required_choice=events.keys())
 
     def options(self, events):
         events_str = 'event\n' + '\n'.join([f"{position + 1}: {event}" for position, event in enumerate(events.keys())])
