@@ -28,8 +28,11 @@ class Post(Validator):
 
     def like_post(self, user: Profile):
         if user in self.likes_list:
-            self.likes_list.remove(user)
-        self.likes_list.append(user)
+            print("Unliked")
+            return self.likes_list.remove(user)
+        print("Liked")
+        return self.likes_list.append(user)
+
 
     def comment_post(self, user, comment):
         self.comments_list.append(f"{user.username}: {comment}")
