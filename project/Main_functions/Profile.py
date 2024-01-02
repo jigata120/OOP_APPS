@@ -36,6 +36,10 @@ class Profile(ABC):
     def followers(self, value):
         self._followers_list = value
 
+    @property
+    def status(self):
+        return 'PRIVATE' if self.is_profile_private else 'PUBLIC'
+
     def change_password(self, new_password):
         self.password = new_password
 
@@ -46,7 +50,10 @@ class Profile(ABC):
         self.is_profile_private = not self.is_profile_private
 
     def follow(self, user):
-        if not user.is_private:
+        if not user.is_profile_private:
+            if user in self._followers_list:
+                self._followers_list.remove(user)
+                return f'You unfollowed {user.username}'
             self._followers_list.append(user)
             return f'You now Follow {user.username}'
         # sidecase private
@@ -65,12 +72,38 @@ class Profile(ABC):
     def __repr__(self):
         return f"{self.username.capitalize()}'s profile"
 
-    def quick_view(self):
+    def quick_for_list_view(self):
         result = [f"{self.username}",
                   f"Followers: {self.followers}",
                   f"Posts: {len(self.posts)}",
                   ]
         return " ".join(result)
+
+    def followers_view(self):
+        result = [user.quick_for_list_view() for user in self._followers_list]
+        return "\n".join(result)
+
+    def posts_view(self):
+        result = [str(post) for post in self.posts]
+        return "\n:::::::::::::::::::::::::::::::::::".join(result)
+
+    def saves_view(self):
+        result = [str(post) for post in self.saves]
+        return "\n:::::::::::::::::::::::::::::::::::".join(result)
+
+    def own_profile_view(self):
+        pass
+
+    def profile_view(self):
+
+        result = [f"╔══════════════════════════════════════════╗",
+                  f"                  {self.status} ",
+                  f"          !_-'-_| {self.username} |_-'-_!",
+                  f"          followers    Posts   Saves",
+                  f"             |{self.followers}|       |{len(self.posts)}|     |{len(self.saves)}|",
+                  f"╚══════════════════════════════════════════╝"
+                  ]
+        return "\n".join(result)
 
     def __str__(self):
         if self.is_profile_private:
@@ -83,7 +116,7 @@ class Profile(ABC):
                   f"email: {self.email}\n" if self.email else "",
                   f"bio: {self.bio}\n" if self.bio else "",
                   f"Contact information: {self.contact_information}\n" if self.contact_information else "",
-                  f"Location={self.location}\n" if self.location else "",
+                  f"Location: {self.location}\n" if self.location else "",
                   f"Education: {self.education}\n" if self.education else "",
                   f"Hobbies: {self.hobbies}\n" if self.hobbies else "",
                   f"This user is active" if self.is_active else "Not active",
