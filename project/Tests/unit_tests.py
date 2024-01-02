@@ -13,12 +13,18 @@ class TestProfiles(TestCase):
         self.user1 = DefaultProfile('JohnDoe', 25, 'john@example.com', 'secure_password')
         self.user2 = AdminProfile('kony', 20, 'kony@example.com', 'secure_password2')
         self.user3 = DefaultProfile('Lucy', 30, 'lucy@example.com', 'secure_password3')
+
     def test_initial_DefaultProfile(self):
         assert self.user1.username == 'JohnDoe'
         assert self.user1.age == 25
         assert self.user1.email == 'john@example.com'
         assert self.user1.password == 'secure_password'
         assert self.user1.is_admin == False
+
+    def test_profile_quick_view(self):
+        print(self.user1.quick_view())
+    def test_profile_profile_view(self):
+        print(self.user1.profile_view())
 
     def test_initial_AdminProfile(self):
         assert self.user2.username == 'kony'
@@ -68,7 +74,7 @@ class TestProfiles(TestCase):
         assert not result
         result = Validator.is_valid_type(['test_str'], list)
         assert result
-        result = Validator.is_min_length(['test_str'],1)
+        result = Validator.is_min_length(['test_str'], 1)
         assert result
         result = Validator.is_min_length(['test_str'], 2)
         assert not result
@@ -76,21 +82,21 @@ class TestProfiles(TestCase):
         assert result
         result = Validator.is_min_length('test_str', 9)
         assert not result
-        result = Validator.is_min_length(12,12)
+        result = Validator.is_min_length(12, 12)
         assert result
-        result = Validator.is_min_length(12,13)
+        result = Validator.is_min_length(12, 13)
         assert not result
         result = Validator.is_max_length('test_str', 8)
         assert result
         result = Validator.is_max_length('test_str', 7)
         assert not result
-        result = Validator.is_max_length(12,12)
+        result = Validator.is_max_length(12, 12)
         assert result
-        result = Validator.is_max_length(12,11)
+        result = Validator.is_max_length(12, 11)
         assert not result
         result = Validator.is_max_length(['test_str'], 1)
         assert result
-        result = Validator.is_max_length(['test_str','test_int'], 1)
+        result = Validator.is_max_length(['test_str', 'test_int'], 1)
         assert not result
 
 
