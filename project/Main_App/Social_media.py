@@ -1,11 +1,11 @@
-from project.Main_App.Events import SocialMediaFunctionalities, user1
+from project.Main_App.Events import SocialMediaFunctionalities, user1,user5
 
 
 class SocialMedia(SocialMediaFunctionalities):
 
     def __init__(self):
         super().__init__()
-        self.user = user1
+        self.user = user5
         # super().login()
 
         self.main_events = {
@@ -14,6 +14,7 @@ class SocialMedia(SocialMediaFunctionalities):
             "create_chat": self.create_chat,
             "search_user": self.search_name,
             "search_post": self.search_post,
+            "profile": self.profile_options,
             "logout": self.logout
         }
         self.main_options()
@@ -33,6 +34,9 @@ class SocialMedia(SocialMediaFunctionalities):
         content = super().personal_content(self.user)
         return content
 
+    def main_options_redirect(self, arg):
+        return self.main_options()
+
     def search_name(self, user=None):
 
         if not user:
@@ -44,12 +48,6 @@ class SocialMedia(SocialMediaFunctionalities):
         def follow_user(_user):
             return self.user.follow(_user)
 
-        def save_post(_user):
-            return self.user.save_post(_user)
-
-        def main_options_redirect(_user):
-            return self.main_options()
-
         def user_info(_user):
             return str(_user)
 
@@ -58,15 +56,17 @@ class SocialMedia(SocialMediaFunctionalities):
 
         def posts_list_view(_user):
             return _user.posts_view()
+
         def save_post_view(_user):
             return _user.saves_view()
+
         user_events = {
             "follow_user": follow_user,
             "info": user_info,
             "followers_list": followers_list_view,
             "posts_list": posts_list_view,
             "saves_list": save_post_view,
-            "menu": main_options_redirect,
+            "menu": self.main_options_redirect,
         }
         print(user_events[super().options(user_events)](user))
         return self.search_name(user)
@@ -93,18 +93,31 @@ class SocialMedia(SocialMediaFunctionalities):
         def save_post(_post):
             return self.user.save_post(_post)
 
-        def main_options_redirect(_post):
-            return self.main_options()
+
 
         post_events = {
             "follow_user": follow_user_by_post,
             "like": like_post,
             "comment": comment_post,
             "save": save_post,
-            "menu": main_options_redirect,
+            "menu": self.main_options_redirect,
         }
         print(post_events[super().options(post_events)](post))
         return self.search_post(post)
+
+    def profile_options(self):
+        profile = self.user.own_profile_view()
+        print(profile)
+        profile_events = {
+            "info": self.user.own_profile_view,
+            "followers_list": self.user.followers_view,
+            "posts_list": self.user.posts_view,
+            "saves_list": self.user.saves_view,
+            #"requests_list": self.user.requests_view,
+
+            "menu": self.main_options
+        }
+        print(profile_events[super().options(profile_events)]())
 
     def main_options(self):
         print(self.main_events[super().options(self.main_events)]())
