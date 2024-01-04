@@ -55,10 +55,12 @@ class SocialMediaFunctionalities(Validator):
         return user
 
     def find_user(self, user_name):
+        if user_name == 'end':
+            return False
         found_user = next((found_user for found_user in self.users if user_name == found_user.username), None)
         if not found_user:
             #    raise ValueError("This user do not exist.")
-            username = Validator.get_validated_data('valid searchable username', data_type=str)
+            username = Validator.get_validated_data('valid searchable username/end', data_type=str)
             return self.find_user(username)
         return found_user
 
@@ -69,7 +71,7 @@ class SocialMediaFunctionalities(Validator):
             post = Validator.get_validated_data('valid searchable post text', data_type=str)
             return self.find_post(post)
         return found_post
-
+#
     def logout(self):
         pass
 
@@ -83,10 +85,22 @@ class SocialMediaFunctionalities(Validator):
         print(f"Post was successfully created by {user.username.capitalize()}.")
         return post
 
-    def create_chat(self, user: Profile, *args: Profile):
-        if user.__class__.__name__ == self.PROFILE_TYPES['admin']:
+    def chat_user_selecting(self):
+        users = []
+        while True:
+            found_user = self.find_user(user_name=None)
+            if not found_user:
+                break
+            if found_user not in users:
+                users.append(found_user)
+                print(f"{found_user.username} is selected.")
+        return users
+
+    def create_chat(self, user: Profile,):
+        if user.__class__ == self.PROFILE_TYPES['admin']:
+            args = self.chat_user_selecting()
             chat = Chat.create(user, args)
-            return chat
+            return str(chat)
         return "You have no admin permissions to crate a chat."
 
     def non_private(self):
