@@ -26,4 +26,4 @@ class Chat(Validator):
         return chat
 
     def __str__(self):
-        return '\n----------------\n'.join(self.messages)
+        return f"{self.members}"+'\n----------------\n'.join(self.messages)
