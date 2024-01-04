@@ -19,7 +19,7 @@ class Validator:
             if data_name in required_data:
                 data = input(f"*Please enter your {data_name}: ")
             else:
-                data = input(f"You can enter your {data_name} (optional): ")
+                data = input(f"\nYou can enter your {data_name} (optional): ")
 
             if Validator.is_valid_type(data, type_of_data=data_type) and \
                     Validator.is_min_length(data, data_min_length) and \
