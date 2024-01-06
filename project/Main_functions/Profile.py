@@ -27,6 +27,7 @@ class Profile(ABC):
         self.chats = []
         self.saves = []
         self._followers_list = []
+        self.requests_list = []
 
     @property
     def followers(self):
@@ -48,15 +49,26 @@ class Profile(ABC):
 
     def change_privacy_status(self):
         self.is_profile_private = not self.is_profile_private
+        if not self.is_profile_private:
+            print("Profile privacy status changed successfully")
+            for user in self.requests_list:
+                self.requests_list.remove(user)
+                print(self.will_follow(user))
+        return "Requests passed successfully"
 
-    def follow(self, user):
-        if not user.is_profile_private:
-            if user in self._followers_list:
-                self._followers_list.remove(user)
-                return f'You unfollowed {user.username}'
-            self._followers_list.append(user)
-            return f'You now Follow {user.username}'
-        # sidecase private
+
+    def will_follow(self, user):
+        if user.is_profile_private:
+            if self in user.requests_list:
+                user.requests_list.remove(user)
+                return f'You unrequested {user.username}'
+            user.requests_list.append(user)
+            return f'You requested {user.username}'
+        if self in user._followers_list:
+            user._followers_list.remove(self)
+            return f'unfollowed successfully'
+        user._followers_list.append(self)
+        return f'Follow successfully'
 
     def save_post(self, post):
         if post in self.saves:
@@ -72,12 +84,24 @@ class Profile(ABC):
     def __repr__(self):
         return f"{self.username.capitalize()}'s profile"
 
+    def requests_view(self):
+        view = "┌─────────── •✧✧• ───────────┐\n           Requests VVV"
+
+
+        requests_list = [user.quick_for_list_view() for user in self.requests_list]
+        result = [view] + requests_list + ["└─────────── •✧✧• ───────────┘"]
+        return "\n".join(result)
+
     def quick_for_list_view(self):
         result = [f"{self.username}",
                   f"Followers: {self.followers}",
                   f"Posts: {len(self.posts)}",
                   ]
         return " ".join(result)
+
+    def chats_view(self):
+        result = [chat.quick_chat_view() for chat in self.chats]
+        return " ｡☆✼★━━━━━━━Chats VVV━━━━━━━━━★✼☆｡\n"+"\n".join(result)+"\n｡☆✼★━━━━━━━━━━━━━━━━━━━━━━━━━★✼☆｡"
 
     def followers_view(self):
         result = [user.quick_for_list_view() for user in self._followers_list]
@@ -101,7 +125,8 @@ class Profile(ABC):
                   f"          !_-'-_| {self.username} |_-'-_!",
                   f"          followers    Posts   Saves",
                   f"             |{self.followers}|       |{len(self.posts)}|     |{len(self.saves)}|",
-                  f"╚══════════════════════════════════════════╝"
+                  f"╚══════════════════════════════════════════╝",
+                  f"Requests:{len(self.requests_list)}"if self.requests_list and self.is_profile_private else "",
                   ]
         return "\n".join(result)
 
