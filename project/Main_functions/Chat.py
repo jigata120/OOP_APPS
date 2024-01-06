@@ -4,7 +4,8 @@ from typing import List
 
 
 class Chat(Validator):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, name, *args, **kwargs):
+        self.name = name
         self.messages = []
         self.members: List[Profile] = list(args)
 
@@ -20,10 +21,17 @@ class Chat(Validator):
         return f'Successfully added member({member.username}) to the chat.'
 
     @classmethod
-    def create(cls, user, *args):
-        chat = cls([user] + list(args))
+    def create(cls, name, user, *args):
+        group = [user] + list(args)
+        chat = cls(name, group)
         user.chats.append(chat)
         return chat
 
+    def quick_chat_view(self):
+        result = f"{self.name} »»————- {'/'.join([member.username for member in [x for x in self.members]])} -————««"
+        return result
+
+
+
     def __str__(self):
-        return f"{self.members}"+'\n----------------\n'.join(self.messages)
+        return f"{self.members}" + '\n----------------\n'.join(self.messages)
